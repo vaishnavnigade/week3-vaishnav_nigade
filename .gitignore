@@ -3,6 +3,7 @@
 
 # --- Secrets & environment ---
 .env                    # holds DB password — NEVER commit this
+*.env
 
 # --- Python cache & compiled files ---
 __pycache__/
