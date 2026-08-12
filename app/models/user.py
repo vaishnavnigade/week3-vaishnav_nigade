@@ -21,6 +21,14 @@ class User(Base):
     )
     mobile: Mapped[str] = mapped_column(String(20), nullable=False)
 
+    role: Mapped[str] = mapped_column(
+        String(20),
+        nullable=False,
+        default="customer",
+        server_default="customer",
+        index=True,
+    )
+
     cart_items: Mapped[list["CartItem"]] = relationship(
         back_populates="user",
         cascade="all, delete-orphan",
