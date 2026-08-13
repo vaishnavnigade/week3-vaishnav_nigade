@@ -20,6 +20,7 @@ import logging
 
 from app.utils.request_logging import RequestLoggingMiddleware
 from app.utils.error_handlers import register_exception_handlers
+from app.routers.notification_router import router as notification_router
 
 
 
@@ -55,6 +56,7 @@ app.include_router(cart_router.router )      # Shopping cart endpoints
 app.include_router(product_router.router )   # Product catalog endpoints
 app.include_router(order_router.router )     # Order management endpoints
 app.include_router(payment_router)
+app.include_router(notification_router)
 
 # Health-check endpoint: a simple GET on "/" to confirm the API is up.
 @app.get("/", tags=["Health"])

@@ -9,7 +9,7 @@ from app.models.user import User
 from app.repositories import async_order_repository
 from app.schemas.order_schema import OrderRead, OrderSummaryRead
 from app.services import order_service
-from app.services.notification_service import send_order_confirmation
+from app.services.notification_service import send_notification
 from app.utils.auth import get_current_user
 from app.utils.authorization import require_roles
 from app.utils.exceptions import NotFoundError, OutOfStockError
@@ -38,9 +38,9 @@ def checkout(
 
         # Send confirmation after the response workflow is completed.
         background_tasks.add_task(
-            send_order_confirmation,
-            order.id,
-            current_user.email,
+          send_notification,
+          current_user.email,
+          f"Order {order.id} confirmed successfully.",
         )
 
         return order
@@ -129,3 +129,5 @@ def get_order(
         )
 
     return order
+
+
