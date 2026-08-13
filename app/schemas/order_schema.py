@@ -34,4 +34,11 @@ class OrderRead(BaseModel):
     status: str
     total_amount: Decimal
     created_at: datetime
-    items: list[OrderItemRead] = Field(default=[])
+    items: list[OrderItemRead] = Field(default_factory=list)
+    
+class OrderSummaryRead(BaseModel):
+    """Summary response used by admin and support users."""
+
+    total_orders: int
+    pending_orders: int
+    total_revenue: Decimal

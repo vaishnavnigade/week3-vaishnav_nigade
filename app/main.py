@@ -13,6 +13,11 @@ from dotenv import load_dotenv
 
 from app.routers.payment_router import router as payment_router
 
+import logging
+
+from app.utils.request_logging import RequestLoggingMiddleware
+from app.utils.error_handlers import register_exception_handlers
+
 
 
 # override=True makes .env values take precedence over any existing env vars.
@@ -31,6 +36,12 @@ app = FastAPI(
     version="1.0.0",
     description="Backend API for the Online Shopping Application",
 )
+
+register_exception_handlers(app)
+
+logging.basicConfig(level=logging.INFO)
+
+app.add_middleware(RequestLoggingMiddleware)
 
 
 
