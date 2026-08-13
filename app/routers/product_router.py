@@ -1,6 +1,8 @@
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+from app.utils.authorization import require_roles
+from app.utils.casbin_authorization import require_casbin_policy
 
 from app.db.sessions import get_db
 from app.schemas.product_schema import (
@@ -140,7 +142,7 @@ def get_product(
     "",
     response_model=ProductRead,
     status_code=status.HTTP_201_CREATED,
-    dependencies=[Depends(require_roles("admin"))],
+    dependencies=[Depends(require_casbin_policy("/products", "POST"))],
 )
 def create_product(
     payload: ProductCreate,
