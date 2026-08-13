@@ -1,0 +1,15 @@
+p, customer, /products, GET
+p, customer, /products/:id, GET
+p, customer, /carts, GET|POST|PUT|DELETE
+p, customer, /orders/me, GET
+p, customer, /orders/checkout, POST
+
+p, admin, /products, GET|POST|PUT|DELETE
+p, admin, /products/:id, GET|PUT|DELETE
+p, admin, /products/categories, POST|PUT
+p, admin, /products/categories/:id, GET|PUT
+p, admin, /orders/admin/all, GET
+p, admin, /orders/admin/async-summary, GET
+
+p, support, /orders/admin/all, GET
+p, support, /orders/admin/async-summary, GET

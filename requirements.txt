@@ -13,3 +13,4 @@ asyncpg
 pytest
 pytest-cov
 pytest-asyncio
+casbin
