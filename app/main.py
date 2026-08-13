@@ -1,10 +1,13 @@
 # FastAPI is the web framework used to build and run the API.
 from fastapi import FastAPI
 
+
 # Base holds the shared SQLAlchemy metadata (all ORM models register against it).
 from app.db.base import Base
 # engine is the configured database connection used to talk to Postgres.
 from app.db.sessions import engine
+from app.models import cart, category, order, product, user
+
 # Import the route handlers for each resource area of the application.
 from app.routers import user_router, cart_router, order_router, product_router
 
