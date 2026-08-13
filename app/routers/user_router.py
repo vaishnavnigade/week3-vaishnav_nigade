@@ -9,7 +9,10 @@ from app.schemas.user_schema import (
     UserResponse,
 )
 from app.services import user_service
-from app.utils.exceptions import AlreadyExistsError, InvalidCredentialsError
+from app.utils.exceptions import (
+    AlreadyExistsError,
+    InvalidCredentialsError,
+)
 from app.utils.security import create_access_token
 
 
@@ -29,6 +32,7 @@ def register_user(
 
     try:
         user = user_service.register_user(db, payload)
+
     except AlreadyExistsError as error:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -41,22 +45,20 @@ def register_user(
     }
 
 
-@router.post(
-    "/login",
-    response_model=TokenResponse,
-)
+@router.post("/login", response_model=TokenResponse)
 def login_user(
     payload: UserLogin,
     db: Session = Depends(get_db),
 ):
-    """Authenticate a user and return a JWT access token."""
+    """Authenticate the user and return a signed JWT."""
 
     try:
         user = user_service.login_user(db, payload)
+
     except InvalidCredentialsError as error:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid email or password",
+            detail=str(error),
             headers={"WWW-Authenticate": "Bearer"},
         ) from error
 
@@ -69,5 +71,6 @@ def login_user(
         "access_token": access_token,
         "token_type": "bearer",
         "email": user.email,
+        "role": user.role,
         "message": "Login successful",
     }

@@ -5,7 +5,7 @@ import os
 
 import jwt
 from dotenv import load_dotenv
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import HTTPBearer
 from pwdlib import PasswordHash
 
 load_dotenv()
@@ -21,10 +21,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(
 
 password_hash = PasswordHash.recommended()
 
-oauth2_scheme = OAuth2PasswordBearer(
-    tokenUrl="/api/auth/login"
-)
-
+bearer_scheme = HTTPBearer(auto_error=False)
 
 def hash_password(password: str) -> str:
     return password_hash.hash(password)

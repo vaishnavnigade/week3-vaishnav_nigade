@@ -26,6 +26,22 @@ class ProductCreate(BaseModel):
     stock: int = Field(ge=0, default=0)
     category_id: int
 
+class ProductUpdate(BaseModel):
+    """Fields that an admin may update on an existing product."""
+
+    name: str | None = None
+    description: str | None = None
+    price: Decimal | None = Field(default=None, gt=0)
+    stock: int | None = Field(default=None, ge=0)
+    category_id: int | None = None
+
+
+class CategoryUpdate(BaseModel):
+    """Fields that an admin may update on an existing category."""
+
+    name: str | None = None
+    description: str | None = None
+
 
 class ProductRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -41,4 +57,4 @@ class ProductRead(BaseModel):
 
 # Category with its nested products (same idea as DepartmentRead -> employees)
 class CategoryWithProductsRead(CategoryRead):
-    products: list[ProductRead] = Field(default=[])
+   products: list[ProductRead] = Field(default_factory=list)

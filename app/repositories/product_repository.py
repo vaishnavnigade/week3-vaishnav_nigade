@@ -35,6 +35,8 @@ def get_product(db: Session, product_id: int) -> Product | None:
     return db.get(Product, product_id)
 
 
+
+
 def list_products(db: Session) -> list[Product]:
     return list(db.scalars(select(Product)))
 
@@ -44,3 +46,69 @@ def update_stock(db: Session, product: Product, new_stock: int) -> Product:
     db.commit()
     db.refresh(product)
     return product
+
+def update_product(
+    db: Session,
+    product: Product,
+    updates: dict,
+) -> Product:
+    """
+    Update only the fields supplied by the service layer.
+    """
+
+    for field, value in updates.items():
+        setattr(product, field, value)
+
+    db.commit()
+    db.refresh(product)
+
+    return product
+
+
+def deactivate_product(
+    db: Session,
+    product: Product,
+) -> Product:
+    """
+    Soft-delete a product by marking it inactive.
+    The database record is preserved for order history and auditing.
+    """
+
+    product.is_active = False
+
+    db.commit()
+    db.refresh(product)
+
+    return product
+
+
+def update_category(
+    db: Session,
+    category: Category,
+    updates: dict,
+) -> Category:
+    """
+    Update only the category fields supplied by the service layer.
+    """
+
+    for field, value in updates.items():
+        setattr(category, field, value)
+
+    db.commit()
+    db.refresh(category)
+
+    return category
+
+def get_active_product(db: Session, product_id: int) -> Product | None:
+    """Return a product only when it exists and is active."""
+    statement = select(Product).where(
+        Product.id == product_id,
+        Product.is_active.is_(True),
+    )
+    return db.scalar(statement)
+
+
+def list_active_products(db: Session) -> list[Product]:
+    """Return only products available for customer browsing."""
+    statement = select(Product).where(Product.is_active.is_(True))
+    return list(db.scalars(statement))

@@ -37,8 +37,17 @@ def list_cart(db: Session, user_id: int) -> list[CartItem]:
     return cart_repository.list_cart_items(db, user_id)
 
 
-def remove_from_cart(db: Session, cart_item_id: int) -> None:
+def remove_from_cart(
+    db: Session,
+    user_id: int,
+    cart_item_id: int,
+) -> None:
+    # Find the requested cart item.
     cart_item = cart_repository.get_cart_item(db, cart_item_id)
-    if cart_item is None:
+
+    # Return the same error for missing or unauthorized items.
+    # This avoids exposing whether another user's cart item exists.
+    if cart_item is None or cart_item.user_id != user_id:
         raise NotFoundError("Cart item not found")
+
     cart_repository.delete_cart_item(db, cart_item)
