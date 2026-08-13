@@ -10,3 +10,6 @@ PyJWT
 python-multipart
 httpx
 asyncpg
+pytest
+pytest-cov
+pytest-asyncio
