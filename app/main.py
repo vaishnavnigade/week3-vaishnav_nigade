@@ -10,7 +10,13 @@ from app.routers import user_router, cart_router, order_router, product_router
 
 # load_dotenv reads key/value pairs from the .env file into environment variables.
 from dotenv import load_dotenv
+
+from app.routers.payment_router import router as payment_router
+
+
+
 # override=True makes .env values take precedence over any existing env vars.
+
 load_dotenv(override=True)
 
 
@@ -27,12 +33,14 @@ app = FastAPI(
 )
 
 
+
+
 # Register each router so its endpoints become part of the application.
 app.include_router(user_router.router )      # User-related endpoints
 app.include_router(cart_router.router )      # Shopping cart endpoints
 app.include_router(product_router.router )   # Product catalog endpoints
 app.include_router(order_router.router )     # Order management endpoints
-
+app.include_router(payment_router)
 
 # Health-check endpoint: a simple GET on "/" to confirm the API is up.
 @app.get("/", tags=["Health"])

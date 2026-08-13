@@ -30,8 +30,26 @@ def list_orders(db: Session, user_id: int) -> list[Order]:
     return list(db.scalars(statement))
 
 
+
 def update_order_status(db: Session, order: Order, status: str) -> Order:
     order.status = status
     db.commit()
     db.refresh(order)
     return order
+
+def list_all_orders(db: Session) -> list[Order]:
+    """
+    Return all orders for authorized admin and support users.
+
+    Line items and products are eager-loaded so the API can
+    safely serialize the complete order response.
+    """
+    statement = (
+        select(Order)
+        .options(
+            selectinload(Order.items).selectinload(OrderItem.product)
+        )
+        .order_by(Order.created_at.desc())
+    )
+
+    return list(db.scalars(statement).all())

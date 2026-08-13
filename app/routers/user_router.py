@@ -45,12 +45,15 @@ def register_user(
     }
 
 
-@router.post("/login", response_model=TokenResponse)
+@router.post(
+    "/login",
+    response_model=TokenResponse,
+)
 def login_user(
     payload: UserLogin,
     db: Session = Depends(get_db),
 ):
-    """Authenticate the user and return a signed JWT."""
+    """Authenticate a user and return a JWT bearer token."""
 
     try:
         user = user_service.login_user(db, payload)

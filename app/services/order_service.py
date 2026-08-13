@@ -60,3 +60,7 @@ def get_order(db: Session, order_id: int) -> Order:
 
 def list_orders(db: Session, user_id: int) -> list[Order]:
     return order_repository.list_orders(db, user_id)
+
+def list_all_orders(db: Session) -> list[Order]:
+    """Return all orders for authorized operational users."""
+    return order_repository.list_all_orders(db)
