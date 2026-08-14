@@ -18,6 +18,8 @@ from app.routers.payment_router import router as payment_router
 
 import logging
 
+from pathlib import Path
+
 from app.utils.request_logging import RequestLoggingMiddleware
 from app.utils.error_handlers import register_exception_handlers
 from app.routers.notification_router import router as notification_router
@@ -43,7 +45,20 @@ app = FastAPI(
 
 register_exception_handlers(app)
 
-logging.basicConfig(level=logging.INFO)
+LOG_DIR = Path("logs")
+LOG_DIR.mkdir(exist_ok=True)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(name)s %(message)s",
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler(
+            LOG_DIR / "application.log",
+            encoding="utf-8",
+        ),
+    ],
+)
 
 app.add_middleware(RequestLoggingMiddleware)
 

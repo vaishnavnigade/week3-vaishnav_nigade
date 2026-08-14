@@ -23,3 +23,6 @@ Thumbs.db# Local virtual environment and coverage files
 /env/
 .coverage
 .coverage.*
+
+logs/
+*.log
