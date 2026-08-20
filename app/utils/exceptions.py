@@ -15,4 +15,4 @@ class InvalidCredentialsError(Exception):
 
 class OutOfStockError(Exception):
     """Raised when a product does not have enough stock."""
-    pass
+    pass 

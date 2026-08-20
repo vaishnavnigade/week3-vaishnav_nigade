@@ -17,3 +17,18 @@ class CartItemRead(BaseModel):
     quantity: int
     added_at: datetime
     product: ProductRead
+
+class CartItemUpdate(BaseModel):
+    quantity: int = Field(
+        ...,
+        ge=1,
+        description="New quantity for the cart item",
+    )
+
+
+class CartItemResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    product_id: int
+    quantity: int
